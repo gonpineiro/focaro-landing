@@ -4,7 +4,6 @@ export const site = {
   title: 'Focaro Digital | Desarrollo web, sistemas y automatización',
   description: 'Desarrollamos landing pages, sistemas web, automatizaciones y chatbots con inteligencia artificial. Conocé nuestros proyectos y contanos qué querés resolver.',
   instagram: 'https://www.instagram.com/focarodigital/',
-  contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? '',
 };
 
 export const applications = [

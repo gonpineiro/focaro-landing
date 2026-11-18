@@ -1,7 +1,6 @@
 'use client';
 
 import { useId, useRef, useState, type FormEvent } from 'react';
-import { site } from '@/lib/content';
 
 type ContactDialogProps = {
   triggerLabel?: string;
@@ -11,6 +10,7 @@ type ContactDialogProps = {
 export function ContactDialog({ triggerLabel = 'Envíanos tu consulta', triggerClassName = 'button button-light contact-open' }: ContactDialogProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [notice, setNotice] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const titleId = useId();
 
   function openDialog() {
@@ -18,24 +18,38 @@ export function ContactDialog({ triggerLabel = 'Envíanos tu consulta', triggerC
     dialogRef.current?.showModal();
   }
 
-  function submitContact(event: FormEvent<HTMLFormElement>) {
+  async function submitContact(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
     const values = new FormData(form);
+    setIsSubmitting(true);
+    setNotice('');
 
-    if (!site.contactEmail) {
-      setNotice('El formulario todavía no tiene configurado un correo de recepción. Por ahora, podés escribirnos por Instagram.');
-      return;
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: values.get('name'),
+          email: values.get('email'),
+          phone: values.get('phone'),
+          message: values.get('message'),
+          companyWebsite: values.get('companyWebsite'),
+        }),
+      });
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || 'No pudimos enviar la consulta.');
+      }
+
+      form.reset();
+      setNotice('¡Gracias! Recibimos tu consulta y nos pondremos en contacto.');
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : 'No pudimos enviar la consulta. Probá nuevamente.');
+    } finally {
+      setIsSubmitting(false);
     }
-
-    const name = String(values.get('name') ?? '');
-    const email = String(values.get('email') ?? '');
-    const phone = String(values.get('phone') ?? '');
-    const message = String(values.get('message') ?? '');
-    const subject = encodeURIComponent(`Consulta desde la web · ${name}`);
-    const body = encodeURIComponent(`Nombre o institución: ${name}\nCorreo electrónico: ${email}\nTeléfono: ${phone || 'No informado'}\n\nMensaje:\n${message}`);
-    window.location.href = `mailto:${site.contactEmail}?subject=${subject}&body=${body}`;
-    setNotice('Se abrió tu aplicación de correo con la consulta preparada para enviar.');
   }
 
   return (
@@ -68,6 +82,10 @@ export function ContactDialog({ triggerLabel = 'Envíanos tu consulta', triggerC
           </div>
 
           <form className="contact-form" onSubmit={submitContact}>
+            <label className="contact-trap" aria-hidden="true">
+              Sitio web
+              <input name="companyWebsite" type="text" tabIndex={-1} autoComplete="off" />
+            </label>
             <label>
               <span>Nombre o institución <span className="required-mark">*</span></span>
               <input name="name" type="text" autoComplete="name" placeholder="¿Cómo te llamás?" required />
@@ -86,9 +104,9 @@ export function ContactDialog({ triggerLabel = 'Envíanos tu consulta', triggerC
             </label>
             <div className="contact-form-footer">
               <p className="form-privacy">Usaremos estos datos únicamente para responder tu consulta.</p>
-              <button className="button button-dark" type="submit">
-                Enviar consulta
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" /></svg>
+              <button className="button button-dark" type="submit" disabled={isSubmitting}>
+                {isSubmitting ? 'Enviando…' : 'Enviar consulta'}
+                {!isSubmitting && <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" /></svg>}
               </button>
             </div>
             {notice && <p className="form-notice" role="status">{notice}</p>}
