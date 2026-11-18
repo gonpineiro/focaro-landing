@@ -82,9 +82,38 @@ export default function Home() {
         </section>
         <ScrollReveal />
       </main>
-      <footer className="frame footer">
-        <span>Focaro Digital</span>
-        <a href="#inicio">Volver al inicio <span aria-hidden="true">↑</span></a>
+      <footer className="footer">
+        <div className="frame footer-main">
+          <div className="footer-brand">
+            <a className="footer-logo" href="#inicio" aria-label="Focaro Digital, inicio">
+              <Image src="/marca/logotipo.svg" alt="Focaro Digital" width={186} height={40} unoptimized />
+            </a>
+            <p>Desarrollamos sitios y aplicaciones web para presentar negocios, organizar procesos y acercar servicios a las personas.</p>
+          </div>
+          <nav className="footer-nav" aria-label="Navegación del pie de página">
+            <h2>Explorá</h2>
+            <a href="#que-hacemos">Qué hacemos</a>
+            <a href="#proyectos">Proyectos</a>
+            <a href="#como-trabajamos">Cómo trabajamos</a>
+          </nav>
+          <div className="footer-contact">
+            <h2>Hablemos de tu proyecto</h2>
+            <p>Contanos qué necesitás resolver y lo conversamos.</p>
+            <ContactDialog triggerLabel="Envianos tu consulta" triggerClassName="footer-contact-link" />
+            <a className="footer-social" href={site.instagram} target="_blank" rel="noreferrer">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" strokeWidth="1.8" />
+                <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="1.8" />
+                <circle cx="17.6" cy="6.7" r="1.1" fill="currentColor" />
+              </svg>
+              Instagram
+            </a>
+          </div>
+        </div>
+        <div className="frame footer-bottom">
+          <span>© Copyright 2026 Focaro Digital</span>
+          <span>Desarrollo web y software</span>
+        </div>
       </footer>
     </>
   );

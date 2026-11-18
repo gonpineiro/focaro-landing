@@ -1,11 +1,17 @@
 'use client';
 
-import { useRef, useState, type FormEvent } from 'react';
+import { useId, useRef, useState, type FormEvent } from 'react';
 import { site } from '@/lib/content';
 
-export function ContactDialog() {
+type ContactDialogProps = {
+  triggerLabel?: string;
+  triggerClassName?: string;
+};
+
+export function ContactDialog({ triggerLabel = 'Envíanos tu consulta', triggerClassName = 'button button-light contact-open' }: ContactDialogProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [notice, setNotice] = useState('');
+  const titleId = useId();
 
   function openDialog() {
     setNotice('');
@@ -34,8 +40,8 @@ export function ContactDialog() {
 
   return (
     <>
-      <button className="button button-light contact-open" type="button" onClick={openDialog}>
-        Envíanos tu consulta
+      <button className={triggerClassName} type="button" onClick={openDialog}>
+        {triggerLabel}
         <svg className="button-arrow-out" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true">
           <path d="M5 19 19 5M6 5h13v13" />
         </svg>
@@ -44,7 +50,7 @@ export function ContactDialog() {
       <dialog
         className="contact-dialog"
         ref={dialogRef}
-        aria-labelledby="contact-dialog-title"
+        aria-labelledby={titleId}
         onClick={(event) => {
           if (event.target === dialogRef.current) dialogRef.current.close();
         }}
@@ -53,7 +59,7 @@ export function ContactDialog() {
           <div className="contact-dialog-heading">
             <div>
               <span className="contact-eyebrow">Hablemos de tu proyecto</span>
-              <h2 id="contact-dialog-title">Envíanos tu consulta</h2>
+              <h2 id={titleId}>Envíanos tu consulta</h2>
               <p>Contanos qué necesitás resolver. Con esta información podemos orientarte mejor.</p>
             </div>
             <button className="dialog-close" type="button" onClick={() => dialogRef.current?.close()} aria-label="Cerrar formulario">

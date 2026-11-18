@@ -1,7 +1,8 @@
 export const site = {
   name: 'Focaro Digital',
-  title: 'Focaro Digital | Desarrollo web y software',
-  description: 'Desarrollamos software y plataformas web para centralizar información, dar seguimiento a procesos y reducir tareas manuales.',
+  url: 'https://focarodigital.com.ar',
+  title: 'Focaro Digital | Desarrollo web, sistemas y automatización',
+  description: 'Desarrollamos landing pages, sistemas web, automatizaciones y chatbots con inteligencia artificial. Conocé nuestros proyectos y contanos qué querés resolver.',
   instagram: 'https://www.instagram.com/focarodigital/',
   contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? '',
 };

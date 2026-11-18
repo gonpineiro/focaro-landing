@@ -5,18 +5,21 @@ const projects = [
     title: 'Trámites municipales en línea',
     sector: 'Sector público',
     image: '/proyectos/tramites-municipales.webp',
+    imageAlt: 'Ilustración de un edificio municipal para representar los trámites en línea.',
     description: 'Desarrollamos portales que reúnen los trámites municipales en un solo lugar. Desde su cuenta, cada vecino puede realizar las gestiones disponibles, consultar su información tributaria y acceder a sus datos personales.',
   },
   {
     title: 'Gestión comercial de repuestos automotores',
     sector: 'Autopartes',
     image: '/proyectos/repuestos-automotores.webp',
+    imageAlt: 'Ilustración de repuestos automotores para representar la gestión comercial.',
     description: 'Creamos un sistema para marcas de repuestos que conecta el catálogo y el stock con el circuito de venta. El equipo puede consultar qué piezas tiene disponibles al cotizar, gestionar el pedido y seguir su envío desde la misma herramienta.',
   },
   {
     title: 'Inventario para operaciones logísticas',
     sector: 'Logística',
     image: '/proyectos/inventario-logistico.webp',
+    imageAlt: 'Ilustración de un depósito para representar un sistema de inventario logístico.',
     description: 'Desarrollamos un sistema de inventario para el sector logístico. En un depósito, cada recepción y cada despacho cambian lo que queda disponible. Conocer las existencias por artículo ayuda al equipo a decidir qué pedidos puede preparar y dónde puede faltar mercadería.',
   },
 ];
@@ -29,12 +32,12 @@ export function Projects() {
           <h2 id="projects-heading">Proyectos realizados</h2>
         </div>
         <div className="project-list">
-          {projects.map(({ title, sector, image, description }) => (
+          {projects.map(({ title, sector, image, imageAlt, description }) => (
             <article className="project-case" key={title}>
               <div className="project-media" data-scroll-reveal>
                 <Image
                   src={image}
-                  alt=""
+                  alt={imageAlt}
                   fill
                   sizes="(max-width: 760px) 89vw, (max-width: 1350px) 44vw, 590px"
                 />
